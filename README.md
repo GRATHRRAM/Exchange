@@ -1,4 +1,4 @@
 # Exchange
 Stock Market Simulator (Not Working yet.....)
-![image](https://github.com/user-attachments/assets/2df36a8b-eee6-45dd-a9a0-ced198d8717f)
-![image](https://github.com/user-attachments/assets/8af72e18-7cb3-4f7a-990e-d76bf4946a14)
+![image](https://github.com/user-attachments/assets/14d59c31-8e50-49a1-bd66-5341f8c6f21f)
+![image](https://github.com/user-attachments/assets/ae7796af-ea2a-43a6-98f9-c2b05fafea59)
