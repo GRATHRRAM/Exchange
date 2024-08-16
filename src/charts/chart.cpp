@@ -1,11 +1,15 @@
 #include "chart.hpp"
 #include <cstdint>
+#include <cstdlib>
 #include <raylib.h>
 #include <string>
 #include <ctime>
+#include <math.h>
+#include <random>
 
+static std::mt19937 rng(time(0)); 
 
-std::string chart::CompanyKeyWords[21] = {
+std::string chart::CompanyKeyWords[22] = {
     "Metal","wood","Gun","Food",
     "House","Fance","Sales","Good",
     "Bad","Cool","Bikes","Car","Tv",
@@ -17,7 +21,7 @@ std::string chart::CompanyKeyWords[21] = {
 std::string chart::RandomName(std::string *KeyWords, uint32_t WordsCout) {
     srand(time(0));
 
-    uint8_t wordsc = GetRandomValue(2,4);
+    uint8_t wordsc = GetRandomValue(2,3);
     std::string name = "";
 
     for(uint8_t i = 0; i < wordsc; ++i) {
@@ -27,14 +31,26 @@ std::string chart::RandomName(std::string *KeyWords, uint32_t WordsCout) {
     return name;
 }
 
-void chart::RandomChart(chart::ChartData *_ChartData, uint64_t chartsize) {
+void chart::RandomChart(chart::ChartData *_ChartData, uint64_t chartsize, const int N, const double T,
+        const double r, const double q, const double sigma, const double S0) { //todo StockFloat accally do something
+    srand(time(0));
     _ChartData->CompanyName = chart::RandomName(chart::CompanyKeyWords, chart::CompanyKeyWordsCout);
     
-    _ChartData->Data.push_back(GetRandomValue(-100000,100000) / 1000.f);
-    for(uint64_t i = 1; i < chartsize; ++i) {
-        _ChartData->Data.push_back(((GetRandomValue(-100000,100000) / 1000.f) 
-         + _ChartData->Data.at(i-1)) / 2);
-    }
+    
+        double dt =  T/N;
+        _ChartData->Price.push_back(S0);
+        std::normal_distribution<double> dist(0.0, 1.0);
+        double drift  = exp(dt*((r - q)-0.5*sigma*sigma));
+        double vol = sqrt(sigma*sigma*dt);
+        for(int i = 1; i < N; i++){
+            double Z = dist(rng);
+            _ChartData->Price.push_back(_ChartData->Price[i-1] * drift * exp(vol*Z));
+        }
+    
+       _ChartData->T = T;
+       _ChartData->r = r;
+       _ChartData->q = q;
+       _ChartData->sigma = sigma;
 }
 
 void chart::UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime) {

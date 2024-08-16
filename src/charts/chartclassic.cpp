@@ -8,7 +8,7 @@ ChartClassic::ChartClassic(chart::ChartData *_ChartData, Camera2D *_Camera) {
     Camera    = _Camera;
     CameraSpeed = 100;
     ChartScaleX = 15;
-    ChartScaleY = 2;
+    ChartScaleY = -4000;
     ChartThick  = 5;
     ChartCompresion = 0;
 }
@@ -26,26 +26,16 @@ void ChartClassic::Draw() {
     if(_PrintVars & 0b00000010) DrawText(TextFormat("CameraZoom: %.2f",Camera->zoom),10,130,15,LIGHTGRAY);
     BeginMode2D(*Camera);
 
-    uint64_t charts = ChartData->Data.size();
-    if(ChartData->Data.at(0) <= ChartData->Data.at(1)) {
-        DrawLineEx((Vector2){0,static_cast<float>(ChartData->Data.at(0)*ChartScaleY)},
-                (Vector2){static_cast<float>((1)*ChartScaleX),static_cast<float>(ChartData->Data.at(1)*ChartScaleY)},
-                ChartThick,RED);
-    } else {    
-        DrawLineEx((Vector2){0,static_cast<float>(ChartData->Data.at(0))},
-                (Vector2){static_cast<float>((1)*ChartScaleX),static_cast<float>(ChartData->Data.at(1))},
-                ChartThick,GREEN);
-    }
-
-    for(uint64_t i = 1; i < charts; ++i) {
+    uint64_t charts = ChartData->Price.size();
+    for(uint64_t i = 0; i < charts; ++i) {
         if(i+1 >= charts) break;
-        if(ChartData->Data.at(i) <= ChartData->Data.at(i+1)) {
-            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Data.at(i)*ChartScaleY)},
-                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Data.at(i+1)*ChartScaleY)},
+        if(ChartData->Price.at(i) >= ChartData->Price.at(i+1)) {
+            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Price.at(i)*ChartScaleY)},
+                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Price.at(i+1)*ChartScaleY)},
                     ChartThick,RED);
         } else {
-            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Data.at(i)*ChartScaleY)},
-                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Data.at(i+1)*ChartScaleY)},
+            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Price.at(i)*ChartScaleY)},
+                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Price.at(i+1)*ChartScaleY)},
                     ChartThick,GREEN);
         }
     }
@@ -62,20 +52,20 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_RIGHT)) Camera->target.x += CameraSpeed * DeltaTime;
 
     
-    if(IsKeyPressed(KEY_Q)) CameraSpeed+=2;
-    if(IsKeyPressed(KEY_A)) CameraSpeed-=2;
+    if(IsKeyDown(KEY_Q)) CameraSpeed+=2;
+    if(IsKeyDown(KEY_A)) CameraSpeed-=2;
     
-    if(IsKeyPressed(KEY_W)) ChartScaleX+=0.1f;
-    if(IsKeyPressed(KEY_S)) ChartScaleX-=0.1f;
+    if(IsKeyDown(KEY_W)) ChartScaleX+=0.1f;
+    if(IsKeyDown(KEY_S)) ChartScaleX-=0.1f;
     
-    if(IsKeyPressed(KEY_E)) ChartScaleY+=0.1f;
-    if(IsKeyPressed(KEY_D)) ChartScaleY-=0.1f;
+    if(IsKeyDown(KEY_E)) ChartScaleY+=0.1f;
+    if(IsKeyDown(KEY_D)) ChartScaleY-=0.1f;
     
-    if(IsKeyPressed(KEY_R)) ChartThick++;
-    if(IsKeyPressed(KEY_F)) ChartThick--;
+    if(IsKeyDown(KEY_R)) ChartThick++;
+    if(IsKeyDown(KEY_F)) ChartThick--;
     
-    if(IsKeyPressed(KEY_T)) ChartCompresion++;
-    if(IsKeyPressed(KEY_G)) ChartCompresion++;
+    if(IsKeyDown(KEY_T)) ChartCompresion++;
+    if(IsKeyDown(KEY_G)) ChartCompresion++;
  
     if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/100) * DeltaTime;
     if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/100) * DeltaTime;
