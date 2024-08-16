@@ -1,4 +1,4 @@
-CFLAGS=-Wall -Wextra -g
+CFLAGS=-Wall -Wextra -O2
 LFLAGS=-lm -lraylib
 OBJS=chart.o chartclassic.o
 

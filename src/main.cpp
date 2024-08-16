@@ -17,12 +17,18 @@ int main() {
     };
 
     chart::ChartData cd;
-    chart::RandomChart(&cd, 1000, 1000, chart::DefaultT, chart::DefaultR,chart::DefaultQ, chart::DefaultSigma, GetRandomValue(0,1000) / 1000.f);
+    chart::RandomChart(&cd, 10000,
+            chart::DefaultExpiry,
+            chart::DefaultRiskLessInterestRate,
+            chart::DefaultDividentYeld,
+            chart::DefaultVolatilityOfStock,
+            GetRandomValue(0,10000) / 100.f);
 
     ChartClassic cc(&cd,&Camera);
     cc.PrintVars(true,true,true,true,true,true,true);
-    
-    Camera.target.y = cd.Price.at(0) * cc.ChartScaleY;
+   
+
+    Camera.target.y = (cd.Price.at(Camera.target.x / cc.ChartScaleX) * cc.ChartScaleY);
 
     while (!WindowShouldClose()) {
         cc.UpdateCamera(GetFrameTime());

@@ -9,20 +9,22 @@ namespace chart {
     typedef struct ChartData {
         std::string CompanyName;
         std::vector<double> Price;
-        double r;          // Riskless interest rate
-        double q;          // Divident yield
-        double sigma;      // Volatility of stock
-        double T;          // Time (expiry)
+        double RiskLessInterestRate;
+        double DividentYield;
+        double VolatilityOfStock;
+        double Expiry;//time
     } ChartData;
 
     extern std::string CompanyKeyWords[22];
     const uint32_t CompanyKeyWordsCout = 22;
-    const double DefaultR = 0.04;
-    const double DefaultQ = 0.0;
-    const double DefaultSigma = 0.20;
-    const double DefaultT = 1;
+    const double DefaultRiskLessInterestRate = 0.04;
+    const double DefaultDividentYeld = 0.0;
+    const double DefaultVolatilityOfStock = 0.20;
+    const double DefaultExpiry = 1;
 
     std::string RandomName(std::string *KeyWords, uint32_t WordCout); 
-    void RandomChart(chart::ChartData *_ChartData, uint64_t chartsize, const int N, const double T,const double r, const double q, const double sigma, const double S0);
+    void RandomChart(chart::ChartData *_ChartData, const uint32_t StockDataSize, const double Expiry,
+        const double RiskLessInterestRate, const double DividentYeld, const double VolatilityOfStock,
+        const double StartingPrice);
     void UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime);
 };

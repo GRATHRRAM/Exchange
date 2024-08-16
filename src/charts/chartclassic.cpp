@@ -8,7 +8,7 @@ ChartClassic::ChartClassic(chart::ChartData *_ChartData, Camera2D *_Camera) {
     Camera    = _Camera;
     CameraSpeed = 100;
     ChartScaleX = 15;
-    ChartScaleY = -4000;
+    ChartScaleY = -10;
     ChartThick  = 5;
     ChartCompresion = 0;
 }
@@ -16,6 +16,7 @@ ChartClassic::ChartClassic(chart::ChartData *_ChartData, Camera2D *_Camera) {
 void ChartClassic::Draw() {
     BeginDrawing();
     ClearBackground(DARKGRAY);
+    DrawFPS(10,150);
     DrawText(ChartData->CompanyName.c_str(),10,10,20,BLACK);
     if(_PrintVars & 0b10000000) DrawText(TextFormat("CameraSpeed: %.2f",CameraSpeed),10,40,15,LIGHTGRAY);
     if(_PrintVars & 0b01000000) DrawText(TextFormat("ChartScaleX: %.2f",ChartScaleX),10,55,15,LIGHTGRAY);
@@ -58,8 +59,8 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_W)) ChartScaleX+=0.1f;
     if(IsKeyDown(KEY_S)) ChartScaleX-=0.1f;
     
-    if(IsKeyDown(KEY_E)) ChartScaleY+=0.1f;
-    if(IsKeyDown(KEY_D)) ChartScaleY-=0.1f;
+    if(IsKeyDown(KEY_E)) ChartScaleY+=0.1f * (CameraSpeed/10);
+    if(IsKeyDown(KEY_D)) ChartScaleY-=0.1f * (CameraSpeed/10);
     
     if(IsKeyDown(KEY_R)) ChartThick++;
     if(IsKeyDown(KEY_F)) ChartThick--;
@@ -67,8 +68,10 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_T)) ChartCompresion++;
     if(IsKeyDown(KEY_G)) ChartCompresion++;
  
-    if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/100) * DeltaTime;
-    if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/100) * DeltaTime;
+    if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/1000) * DeltaTime;
+    if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/1000) * DeltaTime;
+
+    if(IsKeyPressed(KEY_C)) Camera->target.y = (ChartData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY);
 }
 
 void ChartClassic::PrintVars(bool cs,bool csx,bool csy,bool ct,bool cc,bool cp,bool cz) {
