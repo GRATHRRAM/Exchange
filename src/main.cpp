@@ -16,29 +16,30 @@ int main() {
         1
     };
 
-    stock::StockData cd;
-    stock::RandomStock(&cd, 10000,
+    stock::StockData stockdata;
+    stock::RandomStock(&stockdata, 10000,
             stock::DefaultExpiry,
             stock::DefaultRiskLessInterestRate,
             stock::DefaultDividentYeld,
             stock::DefaultVolatilityOfStock,
             GetRandomValue(0,10000) / 100.f);
 
-    ChartClassic chart(&cd, &Camera);
+    ChartClassic chart(&stockdata, &Camera);
     chart.PrintVars(true,true,true,true,true,true,true);
    
-
-    Camera.target.y = (cd.Price.at(Camera.target.x / chart.ChartScaleX) * chart.ChartScaleY);
-
+    Camera.target.y = (stockdata.Price.at(stockdata.Price.size() - 1) * chart.ChartScaleY); 
+    Camera.target.x = static_cast<float>(stockdata.Price.size() * chart.ChartScaleX);
+    
     while (!WindowShouldClose()) {
         if(IsKeyPressed(KEY_N)) { //new chart
-            stock::RandomStock(&cd, 10000,
+            stock::RandomStock(&stockdata, 10000,
                 stock::DefaultExpiry,
                 stock::DefaultRiskLessInterestRate,
                 stock::DefaultDividentYeld,
                 stock::DefaultVolatilityOfStock,
                 GetRandomValue(0,10000) / 100.f);
-                Camera.target.y = (cd.Price.at(Camera.target.x / chart.ChartScaleX) * chart.ChartScaleY);
+                Camera.target.y = (stockdata.Price.at(stockdata.Price.size() - 1) * chart.ChartScaleY); 
+                Camera.target.x = static_cast<float>(stockdata.Price.size() * chart.ChartScaleX);
         } 
         chart.UpdateCamera(GetFrameTime());
         chart.Draw();

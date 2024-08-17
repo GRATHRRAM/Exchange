@@ -72,8 +72,12 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/1000) * DeltaTime;
     if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/1000) * DeltaTime;
 
-    if(IsKeyPressed(KEY_C)) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
-    if(IsKeyPressed(KEY_V)) {Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY); Camera->target.x = 0;}
+    if(IsKeyPressed(KEY_C) && Camera->target.x / ChartScaleX < StockData->Price.size()) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
+    if(IsKeyPressed(KEY_V)) {
+        if(Camera->target.x / ChartScaleX == 0) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
+        else if(Camera->target.x / ChartScaleX < StockData->Price.size()) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
+        Camera->target.x = 0;
+    }
     if(IsKeyPressed(KEY_B)) {
         Camera->target.y = (StockData->Price.at(StockData->Price.size() - 1) * ChartScaleY); 
         Camera->target.x = static_cast<float>(StockData->Price.size() * ChartScaleX);
