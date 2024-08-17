@@ -1,10 +1,10 @@
 #include "chartclassic.hpp"
-#include "chart.hpp"
+#include "../stock.hpp"
 #include <cstdint>
 #include <raylib.h>
 
-ChartClassic::ChartClassic(chart::ChartData *_ChartData, Camera2D *_Camera) {
-    ChartData = _ChartData;
+ChartClassic::ChartClassic(stock::StockData *_StockData, Camera2D *_Camera) {
+    StockData = _StockData;
     Camera    = _Camera;
     CameraSpeed = 100;
     ChartScaleX = 15;
@@ -17,7 +17,7 @@ void ChartClassic::Draw() {
     BeginDrawing();
     ClearBackground(DARKGRAY);
     DrawFPS(10,150);
-    DrawText(ChartData->CompanyName.c_str(),10,10,20,BLACK);
+    DrawText(StockData->CompanyName.c_str(),10,10,20,BLACK);
     if(_PrintVars & 0b10000000) DrawText(TextFormat("CameraSpeed: %.2f",CameraSpeed),10,40,15,LIGHTGRAY);
     if(_PrintVars & 0b01000000) DrawText(TextFormat("ChartScaleX: %.2f",ChartScaleX),10,55,15,LIGHTGRAY);
     if(_PrintVars & 0b00100000) DrawText(TextFormat("ChartScaleY: %.2f",ChartScaleY),10,70,15,LIGHTGRAY);
@@ -27,16 +27,17 @@ void ChartClassic::Draw() {
     if(_PrintVars & 0b00000010) DrawText(TextFormat("CameraZoom: %.2f",Camera->zoom),10,130,15,LIGHTGRAY);
     BeginMode2D(*Camera);
 
-    uint64_t charts = ChartData->Price.size();
+    uint64_t charts = StockData->Price.size();
+
     for(uint64_t i = 0; i < charts; ++i) {
         if(i+1 >= charts) break;
-        if(ChartData->Price.at(i) >= ChartData->Price.at(i+1)) {
-            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Price.at(i)*ChartScaleY)},
-                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Price.at(i+1)*ChartScaleY)},
+        if(StockData->Price.at(i) >= StockData->Price.at(i+1)) {
+            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(StockData->Price.at(i)*ChartScaleY)},
+                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(StockData->Price.at(i+1)*ChartScaleY)},
                     ChartThick,RED);
         } else {
-            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(ChartData->Price.at(i)*ChartScaleY)},
-                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(ChartData->Price.at(i+1)*ChartScaleY)},
+            DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(StockData->Price.at(i)*ChartScaleY)},
+                    (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(StockData->Price.at(i+1)*ChartScaleY)},
                     ChartThick,GREEN);
         }
     }
@@ -71,7 +72,9 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/1000) * DeltaTime;
     if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/1000) * DeltaTime;
 
-    if(IsKeyPressed(KEY_C)) Camera->target.y = (ChartData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY);
+    if(IsKeyPressed(KEY_C)) Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY);
+    if(IsKeyPressed(KEY_V)) {Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY); Camera->target.x = 0;}
+    if(IsKeyPressed(KEY_B)) {Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY); Camera->target.x = StockData->Price.size() * ChartScaleX;}
 }
 
 void ChartClassic::PrintVars(bool cs,bool csx,bool csy,bool ct,bool cc,bool cp,bool cz) {

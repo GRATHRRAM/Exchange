@@ -1,11 +1,11 @@
 #pragma once
-#include "chart.hpp"
+#include "../stock.hpp"
 #include <cstdint>
 #include <raylib.h>
 
 class ChartClassic {
     private:
-        chart::ChartData *ChartData;
+        stock::StockData *StockData;
         Camera2D *Camera;
         uint8_t _PrintVars;
 
@@ -16,7 +16,7 @@ class ChartClassic {
         float ChartThick;
         uint32_t ChartCompresion;
 
-        ChartClassic(chart::ChartData *_ChartData, Camera2D *_Camera);
+        ChartClassic(stock::StockData *_StockData, Camera2D *_Camera);
         void Draw();
         void UpdateCamera(float DeltaTime);
         void PrintVars(bool CameraSpeed,bool ChartScaleX,bool ChartScaleY,

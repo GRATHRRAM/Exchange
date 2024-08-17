@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include "charts/chart.hpp"
+#include "stock.hpp"
 #include "charts/chartclassic.hpp"
 
 #define ResX 800
@@ -16,12 +16,12 @@ int main() {
         1
     };
 
-    chart::ChartData cd;
-    chart::RandomChart(&cd, 10000,
-            chart::DefaultExpiry,
-            chart::DefaultRiskLessInterestRate,
-            chart::DefaultDividentYeld,
-            chart::DefaultVolatilityOfStock,
+    stock::StockData cd;
+    stock::RandomStock(&cd, 10000,
+            stock::DefaultExpiry,
+            stock::DefaultRiskLessInterestRate,
+            stock::DefaultDividentYeld,
+            stock::DefaultVolatilityOfStock,
             GetRandomValue(0,10000) / 100.f);
 
     ChartClassic cc(&cd,&Camera);

@@ -1,0 +1,66 @@
+#include "stock.hpp"
+#include <cstdint>
+#include <cstdlib>
+#include <raylib.h>
+#include <string>
+#include <ctime>
+#include <math.h>
+#include <random>
+#include <fstream>
+#include <vector>
+
+
+static std::mt19937 rng(time(0)); 
+
+std::string stock::RandomName(std::vector<std::string> KeyWords) {
+    uint8_t wordsc = GetRandomValue(2,3);
+    std::string name = "";
+    
+    uint64_t size = KeyWords.size();
+
+    for(uint8_t i = 0; i < wordsc; ++i) {
+        name += KeyWords[GetRandomValue(0,size)];
+        name += " ";
+    }
+    return name;
+}
+
+void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSize, const double Expiry,
+        const double RiskLessInterestRate, const double DividentYeld, const double VolatilityOfStock, const double StartingPrice) {
+        std::vector<std::string> names = stock::GetCompanyNames(stock::DefaultPath);
+        _StockData->CompanyName = stock::RandomName(names);
+    
+    
+        double dt =  Expiry/StockDataSize;
+        _StockData->Price.push_back(StartingPrice);
+        std::normal_distribution<double> dist(0.0, 1.0);
+        double drift  = exp(dt*((RiskLessInterestRate - DividentYeld)-0.5*VolatilityOfStock*VolatilityOfStock));
+        double vol = sqrt(VolatilityOfStock*VolatilityOfStock*dt);
+        for(uint32_t i = 1; i < StockDataSize; i++){
+            double Z = dist(rng);
+            _StockData->Price.push_back(_StockData->Price[i-1] * drift * exp(vol*Z));
+        }
+    
+       _StockData->Expiry = Expiry;
+       _StockData->RiskLessInterestRate = RiskLessInterestRate;
+       _StockData->DividentYield = DividentYeld;
+       _StockData->VolatilityOfStock = VolatilityOfStock;
+}
+
+std::vector<std::string> stock::GetCompanyNames(std::string path) {
+    std::fstream file;
+    file.open(path + "companynames.list", std::ios::in); 
+    
+    std::vector<std::string> sv;
+
+    if (file.is_open()) { 
+        std::string s;
+        while(getline(file, s)) { 
+            sv.push_back(s);
+        }
+        
+        file.close(); 
+    }
+    
+    return sv;
+}
