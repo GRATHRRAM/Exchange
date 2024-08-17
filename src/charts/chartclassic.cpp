@@ -8,7 +8,7 @@ ChartClassic::ChartClassic(stock::StockData *_StockData, Camera2D *_Camera) {
     Camera    = _Camera;
     CameraSpeed = 100;
     ChartScaleX = 15;
-    ChartScaleY = -10;
+    ChartScaleY = -2500;
     ChartThick  = 5;
     ChartCompresion = 0;
 }

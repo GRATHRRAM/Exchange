@@ -24,15 +24,24 @@ int main() {
             stock::DefaultVolatilityOfStock,
             GetRandomValue(0,10000) / 100.f);
 
-    ChartClassic cc(&cd,&Camera);
-    cc.PrintVars(true,true,true,true,true,true,true);
+    ChartClassic chart(&cd, &Camera);
+    chart.PrintVars(true,true,true,true,true,true,true);
    
 
-    Camera.target.y = (cd.Price.at(Camera.target.x / cc.ChartScaleX) * cc.ChartScaleY);
+    Camera.target.y = (cd.Price.at(Camera.target.x / chart.ChartScaleX) * chart.ChartScaleY);
 
     while (!WindowShouldClose()) {
-        cc.UpdateCamera(GetFrameTime());
-        cc.Draw();
+        if(IsKeyPressed(KEY_N)) { //new chart
+            stock::RandomStock(&cd, 10000,
+                stock::DefaultExpiry,
+                stock::DefaultRiskLessInterestRate,
+                stock::DefaultDividentYeld,
+                stock::DefaultVolatilityOfStock,
+                GetRandomValue(0,10000) / 100.f);
+                Camera.target.y = (cd.Price.at(Camera.target.x / chart.ChartScaleX) * chart.ChartScaleY);
+        } 
+        chart.UpdateCamera(GetFrameTime());
+        chart.Draw();
     }
     
     return 0;

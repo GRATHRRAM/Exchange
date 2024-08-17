@@ -1,4 +1,5 @@
 #include "stock.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <raylib.h>
@@ -29,7 +30,8 @@ void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSi
         const double RiskLessInterestRate, const double DividentYeld, const double VolatilityOfStock, const double StartingPrice) {
         std::vector<std::string> names = stock::GetCompanyNames(stock::DefaultPath);
         _StockData->CompanyName = stock::RandomName(names);
-    
+   
+        _StockData->Price.clear();
     
         double dt =  Expiry/StockDataSize;
         _StockData->Price.push_back(StartingPrice);
@@ -40,7 +42,9 @@ void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSi
             double Z = dist(rng);
             _StockData->Price.push_back(_StockData->Price[i-1] * drift * exp(vol*Z));
         }
-    
+        
+        stock::Normalize(&_StockData->Price);
+
        _StockData->Expiry = Expiry;
        _StockData->RiskLessInterestRate = RiskLessInterestRate;
        _StockData->DividentYield = DividentYeld;
@@ -63,4 +67,20 @@ std::vector<std::string> stock::GetCompanyNames(std::string path) {
     }
     
     return sv;
+}
+
+void stock::Normalize(std::vector<double> *Vector) {
+    uint64_t Size = Vector->size();
+    
+    double min = 1000000;
+    double max = 0;
+
+    for(uint64_t i = 0; i < Size; ++i) {
+        if(Vector->at(i) < min) min = Vector->at(i);
+        if(Vector->at(i) > max) max = Vector->at(i);
+    }
+
+    for(uint64_t i = 0; i < Size; ++i) {
+        Vector->at(i) = (Vector->at(i) - min) / (max - min);
+    }
 }

@@ -15,11 +15,19 @@ namespace stock {
         double Expiry;//time
     } StockData;
 
-    const double DefaultRiskLessInterestRate = 0.04;
-    const double DefaultDividentYeld = 0.0;
-    const double DefaultVolatilityOfStock = 0.20;
-    const double DefaultExpiry = 1;
+    const double DefaultCalmRiskLessInterestRate = 0.04;
+    const double DefaultCalmDividentYeld = 0.0;
+    const double DefaultCalmVolatilityOfStock = 0.20;
+    const double DefaultCalmExpiry = 1;
+   
+    const double DefaultRiskLessInterestRate = 0.08;
+    const double DefaultDividentYeld = 0.2;
+    const double DefaultVolatilityOfStock = 0.40;
+    const double DefaultExpiry = 2;
+    
     const std::string DefaultPath = "templates/";
+
+    
 
     std::string RandomName(std::vector<std::string> KeyWords);
     void RandomStock(stock::StockData *_StockData, const uint32_t StockDataSize, const double Expiry,
@@ -27,4 +35,5 @@ namespace stock {
         const double StartingPrice);
     void UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime);
     std::vector<std::string> GetCompanyNames(std::string path);
+    void Normalize(std::vector<double> *data);
 };
