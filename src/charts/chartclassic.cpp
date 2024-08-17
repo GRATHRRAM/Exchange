@@ -74,7 +74,10 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
 
     if(IsKeyPressed(KEY_C)) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
     if(IsKeyPressed(KEY_V)) {Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY); Camera->target.x = 0;}
-    if(IsKeyPressed(KEY_B)) {Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY); Camera->target.x = static_cast<float>(StockData->Price.size() * ChartScaleX);}
+    if(IsKeyPressed(KEY_B)) {
+        Camera->target.y = (StockData->Price.at(StockData->Price.size() - 1) * ChartScaleY); 
+        Camera->target.x = static_cast<float>(StockData->Price.size() * ChartScaleX);
+    }
 }
 
 void ChartClassic::PrintVars(bool cs,bool csx,bool csy,bool ct,bool cc,bool cp,bool cz) {
