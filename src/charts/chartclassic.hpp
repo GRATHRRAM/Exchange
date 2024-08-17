@@ -6,9 +6,9 @@
 class ChartClassic {
     private:
         stock::StockData *StockData;
+       // stock::StockData StockDataCompresed;
         Camera2D *Camera;
         uint8_t _PrintVars;
-
     public:
         float CameraSpeed;
         float ChartScaleX;
@@ -22,4 +22,5 @@ class ChartClassic {
         void PrintVars(bool CameraSpeed,bool ChartScaleX,bool ChartScaleY,
                 bool ChartThick,bool ChartCompresion,bool CameraPosition,
                 bool CameraZoom);
+        //void Compress();
 };

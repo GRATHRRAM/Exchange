@@ -1,5 +1,6 @@
 #include "chartclassic.hpp"
 #include "../stock.hpp"
+#include <cmath>
 #include <cstdint>
 #include <raylib.h>
 
@@ -46,7 +47,6 @@ void ChartClassic::Draw() {
     EndDrawing();
 }
 
-
 void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_UP))    Camera->target.y -= CameraSpeed * DeltaTime;
     if(IsKeyDown(KEY_DOWN))  Camera->target.y += CameraSpeed * DeltaTime;
@@ -72,9 +72,9 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_Z)) Camera->zoom += (CameraSpeed/1000) * DeltaTime;
     if(IsKeyDown(KEY_X)) Camera->zoom -= (CameraSpeed/1000) * DeltaTime;
 
-    if(IsKeyPressed(KEY_C)) Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY);
-    if(IsKeyPressed(KEY_V)) {Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY); Camera->target.x = 0;}
-    if(IsKeyPressed(KEY_B)) {Camera->target.y = (StockData->Price.at(Camera->target.x / ChartScaleX) * ChartScaleY); Camera->target.x = StockData->Price.size() * ChartScaleX;}
+    if(IsKeyPressed(KEY_C)) Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
+    if(IsKeyPressed(KEY_V)) {Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY); Camera->target.x = 0;}
+    if(IsKeyPressed(KEY_B)) {Camera->target.y = (StockData->Price.at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY); Camera->target.x = static_cast<float>(StockData->Price.size() * ChartScaleX);}
 }
 
 void ChartClassic::PrintVars(bool cs,bool csx,bool csy,bool ct,bool cc,bool cp,bool cz) {
@@ -87,4 +87,19 @@ void ChartClassic::PrintVars(bool cs,bool csx,bool csy,bool ct,bool cc,bool cp,b
     if(cp)  _PrintVars = _PrintVars | 0b00000100;
     if(cz)  _PrintVars = _PrintVars | 0b00000010;
 }
+/*
+void ChartClassic::Compress() {
+    if(ChartCompresion == 0) retur;
+    uint64_t Size = StockData->Price.size();
+    if(Size < ChartCompresion) return;
 
+    StockDataCompresed = *StockData;
+    StockDataCompresed.Price.clear();
+    for(uint64_t i = 0; i < Size / ChartCompresion; ++i) {
+        double sum = 0;
+        for(uint64_t ii = 0; i < ChartCompresion; ++ii) {
+            sum += StockData->Price.at((i * ChartCompresion) + ii);  
+        }
+        StockDataCompresed.Price.push_back(sum / ChartCompresion); 
+    } 
+}*/
