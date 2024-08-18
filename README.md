@@ -19,7 +19,7 @@ mkdir win</br>
 </br>
 Now Download raylib files from https://github.com/raysan5/raylib/releases/tag/5.0 </br>
 file calld raylib-5.0_win64_mingw-w64.zip </br>
-And put include and lib directories in win/
+And put include and lib directories in win/</br>
 </br>
 mkdir Build</br>
 cp ExchangeData/ Build/ -r</br>
