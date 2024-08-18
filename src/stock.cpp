@@ -28,7 +28,7 @@ std::string stock::RandomName(std::vector<std::string> KeyWords) {
 
 void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSize, const double Expiry,
         const double RiskLessInterestRate, const double DividentYeld, const double VolatilityOfStock, const double StartingPrice) {
-        std::vector<std::string> names = stock::GetCompanyNames(stock::DefaultPath);
+        std::vector<std::string> names = stock::GetCompanyNames();
         _StockData->CompanyName = stock::RandomName(names);
    
         _StockData->Price.clear();
@@ -51,9 +51,9 @@ void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSi
        _StockData->VolatilityOfStock = VolatilityOfStock;
 }
 
-std::vector<std::string> stock::GetCompanyNames(std::string path) {
+std::vector<std::string> stock::GetCompanyNames() {
     std::fstream file;
-    file.open(path + "companynames.list", std::ios::in); 
+    file.open("ExchangeData/templates/companynames.list", std::ios::in); 
     
     std::vector<std::string> sv;
 
