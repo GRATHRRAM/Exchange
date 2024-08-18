@@ -10,6 +10,6 @@ cd Exchange</br>
 mkdir Build</br>
 cp ExchangeData/ Build/ -r</br>
 cd Build</br>
-cmake ..</br>
+cmake ..   //if you want to build for win add -DCMAKE_ARGV0="win"</br>
 make</br>
 ### done
