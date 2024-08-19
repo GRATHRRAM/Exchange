@@ -43,8 +43,6 @@ void stock::RandomStock(stock::StockData *_StockData, const uint32_t StockDataSi
             _StockData->Price.push_back(_StockData->Price[i-1] * drift * exp(vol*Z));
         }
         
-        stock::Normalize(&_StockData->Price);
-
        _StockData->Expiry = Expiry;
        _StockData->RiskLessInterestRate = RiskLessInterestRate;
        _StockData->DividentYield = DividentYeld;
@@ -69,7 +67,7 @@ std::vector<std::string> stock::GetCompanyNames() {
     return sv;
 }
 
-void stock::Normalize(std::vector<double> *Vector) {
+stock::NormalizedPrice stock::Normalize(const std::vector<double> *Vector) {
     uint64_t Size = Vector->size();
     
     double min = 1000000;
@@ -79,8 +77,16 @@ void stock::Normalize(std::vector<double> *Vector) {
         if(Vector->at(i) < min) min = Vector->at(i);
         if(Vector->at(i) > max) max = Vector->at(i);
     }
-
+    
+    std::vector<double> buff;
     for(uint64_t i = 0; i < Size; ++i) {
-        Vector->at(i) = (Vector->at(i) - min) / (max - min);
+        buff.push_back((Vector->at(i) - min) / (max - min));
     }
+
+    stock::NormalizedPrice np = {
+        buff,
+        max,
+        min
+    };
+    return np;
 }

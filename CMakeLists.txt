@@ -15,18 +15,16 @@ else()
     add_compile_options(-Wall -Wextra -O2)
 endif()
 
-add_library(stock src/stock.cpp)
-add_library(chartclassic src/charts/chartclassic.cpp)
-
-add_executable(ex src/main.cpp)
-
-set(libs
-    stock
-    chartclassic
+set(sources
+    src/stock.cpp
+    src/charts/chartclassic.cpp
+    src/exchange.cpp
 )
 
+add_executable(ex src/main.cpp ${sources})
+
 if(CMAKE_ARGV0 STREQUAL "win")
-    target_link_libraries(ex PRIVATE m raylib ${libs} -static -lopengl32 -lgdi32 -lwinmm -lgcc -lstdc++ -lwinpthread)
+    target_link_libraries(ex PRIVATE m raylib -static -lopengl32 -lgdi32 -lwinmm -lgcc -lstdc++ -lwinpthread)
 else()
-    target_link_libraries(ex PRIVATE m raylib ${libs})
+    target_link_libraries(ex PRIVATE m raylib)
 endif()

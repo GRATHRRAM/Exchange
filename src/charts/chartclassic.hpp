@@ -1,26 +1,24 @@
 #pragma once
-#include "../stock.hpp"
 #include <cstdint>
 #include <raylib.h>
+#include <string>
+#include <vector>
 
 class ChartClassic {
     private:
-        stock::StockData *StockData;
-       // stock::StockData StockDataCompresed;
+        std::vector<double> *Price;
         Camera2D *Camera;
+        std::string *CompanyName;
         uint8_t _PrintVars;
     public:
         float CameraSpeed;
         float ChartScaleX;
         float ChartScaleY;
         float ChartThick;
-        uint32_t ChartCompresion;
 
-        ChartClassic(stock::StockData *_StockData, Camera2D *_Camera);
+        ChartClassic(std::vector<double> *Price, Camera2D *_Camera, std::string *CompanyName);
         void Draw();
         void UpdateCamera(float DeltaTime);
-        void PrintVars(bool CameraSpeed,bool ChartScaleX,bool ChartScaleY,
-                bool ChartThick,bool ChartCompresion,bool CameraPosition,
-                bool CameraZoom);
-        //void Compress();
+        void PrintVars(bool CameraSpeed,bool CameraPosition,bool CameraZoom,
+                bool ChartScaleX,bool ChartScaleY,bool ChartThick);
 };

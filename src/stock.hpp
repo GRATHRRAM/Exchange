@@ -15,6 +15,12 @@ namespace stock {
         double Expiry;//time
     } StockData;
 
+    typedef struct NormalizedPrice {
+        std::vector<double> Price;
+        double max;
+        double min;
+    } NormalizedPrice;
+
     const double DefaultCalmRiskLessInterestRate = 0.04;
     const double DefaultCalmDividentYeld = 0.0;
     const double DefaultCalmVolatilityOfStock = 0.20;
@@ -31,5 +37,5 @@ namespace stock {
         const double StartingPrice);
     void UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime);
     std::vector<std::string> GetCompanyNames();
-    void Normalize(std::vector<double> *data);
+    stock::NormalizedPrice Normalize(const std::vector<double> *data);
 };
