@@ -32,7 +32,7 @@ namespace stock {
     const double DefaultExpiry = 2;
 
     std::string RandomName(std::vector<std::string> KeyWords);
-    void RandomStock(stock::StockData *_StockData, const uint32_t StockDataSize, const double Expiry,
+    void RandomStock(size_t seed, stock::StockData *_StockData, const uint32_t StockDataSize, const double Expiry,
         const double RiskLessInterestRate, const double DividentYeld, const double VolatilityOfStock,
         const double StartingPrice);
     void UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime);

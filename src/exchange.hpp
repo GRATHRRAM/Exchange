@@ -1,6 +1,7 @@
 #pragma once
 #include "charts/chartclassic.hpp"
 #include "stock.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <raylib.h>
 #include <vector>
@@ -27,6 +28,7 @@ class Exchange {
         double min;
     } NormalizedPrice;
 
+    uint8_t _PrintVars;
 
     void UpdateRender();
     void UpdateCharts();
@@ -36,12 +38,13 @@ class Exchange {
     stock::NormalizedPrice NPrice;
     Camera2D Camera;
     ChartClassic *Chart;
+    size_t seed;
 
     uint16_t ResX = 800;
     uint16_t ResY = 600;
    
     RenderCfg RenderConfig = {
-        LIGHTGRAY,
+        DARKGRAY,
         GREEN,
         RED
     };
@@ -53,7 +56,8 @@ class Exchange {
         2
     };
 
-    Exchange(uint16_t ResX, uint16_t ResY,uint64_t CoutOfStartingStockData);
+    Exchange(uint16_t ResX, uint16_t ResY,uint64_t CoutOfStartingStockData, size_t seed);
     ~Exchange();
     void Update();
+    void PrintVars(bool CameraSpeed,bool CameraPosition,bool CameraZoom, bool ChartScaleX,bool ChartScaleY,bool ChartThick);
 };

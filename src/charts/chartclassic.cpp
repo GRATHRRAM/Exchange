@@ -2,11 +2,9 @@
 #include <cmath>
 #include <cstdint>
 #include <raylib.h>
-#include <string>
 #include <vector>
 
-ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera, std::string *_CompanyName) {
-    CompanyName = _CompanyName;
+ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera) {
     Price = _Price;
     Camera    = _Camera;
     CameraSpeed = 100;
@@ -16,18 +14,6 @@ ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera, std::
 }
 
 void ChartClassic::Draw() {
-    BeginDrawing();
-    ClearBackground(DARKGRAY);
-    DrawFPS(10,150);
-    DrawText(CompanyName->c_str(),10,10,20,BLACK);
-    if(_PrintVars & 0b10000000) DrawText(TextFormat("CameraSpeed: %.2f",CameraSpeed),10,40,15,LIGHTGRAY);
-    if(_PrintVars & 0b01000000) DrawText(TextFormat("CameraPosition{x: %.2f,y: %.2f}",Camera->target.x,Camera->target.y),10,55,15,LIGHTGRAY);
-    if(_PrintVars & 0b00100000) DrawText(TextFormat("CameraZoom: %.2f",Camera->zoom),10,70,15,LIGHTGRAY);
-    if(_PrintVars & 0b00010000) DrawText(TextFormat("ChartScaleX: %.2f",ChartScaleX),10,85,15,LIGHTGRAY);
-    if(_PrintVars & 0b00001000) DrawText(TextFormat("ChartScaleY: %.2f",ChartScaleY),10,100,15,LIGHTGRAY);
-    if(_PrintVars & 0b00000100) DrawText(TextFormat("ChartThick: %.2f" ,ChartThick) ,10,115,15,LIGHTGRAY);
-    BeginMode2D(*Camera);
-
     uint64_t charts = Price->size();
 
     for(uint64_t i = 0; i < charts; ++i) {
@@ -42,9 +28,6 @@ void ChartClassic::Draw() {
                     ChartThick,GREEN);
         }
     }
-    
-    EndMode2D();
-    EndDrawing();
 }
 
 void ChartClassic::UpdateCamera(float DeltaTime) {
@@ -79,14 +62,4 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
         Camera->target.y = (Price->at(Price->size() - 1) * ChartScaleY); 
         Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
     }
-}
-
-void ChartClassic::PrintVars(bool cs,bool cp,bool cz,bool csx,bool csy,bool ct) {
-    _PrintVars = 0;
-    if(cs)  _PrintVars = _PrintVars | 0b10000000;
-    if(cp)  _PrintVars = _PrintVars | 0b01000000;
-    if(cz)  _PrintVars = _PrintVars | 0b00100000;
-    if(csx) _PrintVars = _PrintVars | 0b00010000;
-    if(csy) _PrintVars = _PrintVars | 0b00001000;
-    if(ct)  _PrintVars = _PrintVars | 0b00000100;
 }
