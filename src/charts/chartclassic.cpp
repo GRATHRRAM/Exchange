@@ -13,7 +13,7 @@ ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera) {
     ChartThick  = 5;
 }
 
-void ChartClassic::Draw() {
+void ChartClassic::Draw(Color Up, Color Down) {
     uint64_t charts = Price->size();
 
     for(uint64_t i = 0; i < charts; ++i) {
@@ -21,11 +21,12 @@ void ChartClassic::Draw() {
         if(Price->at(i) >= Price->at(i+1)) {
             DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(Price->at(i)*ChartScaleY)},
                     (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(Price->at(i+1)*ChartScaleY)},
-                    ChartThick,RED);
+                    ChartThick,Down);
         } else {
             DrawLineEx((Vector2){static_cast<float>(i)*ChartScaleX,static_cast<float>(Price->at(i)*ChartScaleY)},
                     (Vector2){static_cast<float>((i+1)*ChartScaleX),static_cast<float>(Price->at(i+1)*ChartScaleY)},
-                    ChartThick,GREEN);
+    //srand(time(0));
+                    ChartThick,Up);
         }
     }
 }

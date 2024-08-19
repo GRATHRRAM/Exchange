@@ -12,6 +12,9 @@ int main() {
     std::cin >> seed;
 
     if(seed == 0) {srand(time(0)); seed = rand() % RAND_MAX;}
+        
+    srand(seed);
+    SetRandomSeed(seed);
 
     Exchange ex(800,600,1000, seed);
     

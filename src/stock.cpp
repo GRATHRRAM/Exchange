@@ -1,4 +1,5 @@
 #include "stock.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <raylib.h>

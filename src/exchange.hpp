@@ -13,6 +13,7 @@ class Exchange {
         Color ChartBackgroudColor;
         Color ChartUpPriceColor;
         Color ChartDownPriceColor;
+        uint64_t DrawLinesCout;
     } RenderCfg;
     
     typedef struct StockCfg {
@@ -46,7 +47,8 @@ class Exchange {
     RenderCfg RenderConfig = {
         DARKGRAY,
         GREEN,
-        RED
+        RED,
+        10
     };
 
     StockCfg StockConfig = {

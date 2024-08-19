@@ -67,7 +67,7 @@ void Exchange::UpdateRender() {
         ClearBackground(RenderConfig.ChartBackgroudColor);
 
         BeginMode2D(Camera);
-            Chart->Draw(); 
+            Chart->Draw(RenderConfig.ChartUpPriceColor,RenderConfig.ChartDownPriceColor); 
         EndMode2D();
         
         DrawText(StockData.CompanyName.c_str(),10,10,20,BLACK);

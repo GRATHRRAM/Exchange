@@ -13,6 +13,6 @@ class ChartClassic {
         float ChartThick;
 
         ChartClassic(std::vector<double> *Price, Camera2D *_Camera);
-        void Draw();
+        void Draw(Color Up, Color Down);
         void UpdateCamera(float DeltaTime);
 };
