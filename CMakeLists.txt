@@ -25,6 +25,7 @@ set(sources
     src/charts/chartclassic.cpp
     src/exchange.cpp
     src/livestock/livestock.cpp
+    src/startscreen/startscreen.cpp
 )
 
 add_executable(ex src/main.cpp ${sources})
