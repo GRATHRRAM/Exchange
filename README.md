@@ -3,6 +3,7 @@ Stock Market Simulator (Not Working yet.....)
 ![image](https://github.com/user-attachments/assets/3cb0016e-4d5d-4ab7-b5f0-f70b4a399b17)
 ![image](https://github.com/user-attachments/assets/6d7b767d-a1c2-44fa-905c-9864588ee3dc)
 ![image](https://github.com/user-attachments/assets/de45be66-1153-4d64-8ac1-955bcd3a34a3)
+![image](https://github.com/user-attachments/assets/8f5f09c7-cba6-45aa-a98d-53630f177bee)
 </br>
 # Building on linux for linux
 git clone https://github.com/GRATHRRAM/Exchange</br>
