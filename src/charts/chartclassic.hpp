@@ -7,6 +7,7 @@ class ChartClassic {
     private:
         std::vector<double> *Price;
         Camera2D *Camera;
+        Vector2 CameraTarget;
     public:
         float CameraSpeed;
         float ChartScaleX;

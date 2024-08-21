@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdint>
 #include <raylib.h>
+#include <raymath.h>
 #include <vector>
 
 ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera) {
@@ -11,6 +12,7 @@ ChartClassic::ChartClassic(std::vector<double> *_Price, Camera2D *_Camera) {
     ChartScaleX = 15;
     ChartScaleY = -2500;
     ChartThick  = 5;
+    CameraTarget = Camera->target;
 }
 
 void ChartClassic::Draw(Color Up, Color Down) {
@@ -32,10 +34,10 @@ void ChartClassic::Draw(Color Up, Color Down) {
 }
 
 void ChartClassic::UpdateCamera(float DeltaTime) {
-    if(IsKeyDown(KEY_UP))    Camera->target.y -= CameraSpeed * DeltaTime;
-    if(IsKeyDown(KEY_DOWN))  Camera->target.y += CameraSpeed * DeltaTime;
-    if(IsKeyDown(KEY_LEFT))  Camera->target.x -= CameraSpeed * DeltaTime;
-    if(IsKeyDown(KEY_RIGHT)) Camera->target.x += CameraSpeed * DeltaTime;
+    if(IsKeyDown(KEY_UP))    CameraTarget.y -= CameraSpeed * DeltaTime;
+    if(IsKeyDown(KEY_DOWN))  CameraTarget.y += CameraSpeed * DeltaTime;
+    if(IsKeyDown(KEY_LEFT))  CameraTarget.x -= CameraSpeed * DeltaTime;
+    if(IsKeyDown(KEY_RIGHT)) CameraTarget.x += CameraSpeed * DeltaTime;
 
     
     if(IsKeyDown(KEY_Q)) CameraSpeed+=2;
@@ -57,24 +59,28 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyPressed(KEY_V)) CameraSetBeginChart();
     if(IsKeyPressed(KEY_B)) CameraSetEndChart();
     if(IsKeyPressed(KEY_L)) CameraLock = !CameraLock;
+
+    Camera->target.x = Lerp(Camera->target.x,CameraTarget.x, 0.1);
+    Camera->target.y = Lerp(Camera->target.y,CameraTarget.y, 0.1);
 }
 
 void ChartClassic::CameraSetYChart() {
-    if(Camera->target.x / ChartScaleX < Price->size()) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
+    if(CameraTarget.x == 0) return;
+    if(CameraTarget.x / ChartScaleX < Price->size()) CameraTarget.y = (Price->at(static_cast<int>(std::abs(CameraTarget.x / ChartScaleX) - 1)) * ChartScaleY); 
 }
 
 void ChartClassic::CameraSetBeginChart() {
-        if(Camera->target.x / ChartScaleX == 0) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
-        else if(Camera->target.x / ChartScaleX < Price->size()) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
-        Camera->target.x = 0;
+        if(CameraTarget.x / ChartScaleX == 0) CameraTarget.y = (Price->at(static_cast<int>(std::abs(CameraTarget.x / ChartScaleX))) * ChartScaleY);
+        else if(CameraTarget.x / ChartScaleX < Price->size()) CameraTarget.y = (Price->at(static_cast<int>(std::abs(CameraTarget.x / ChartScaleX) - 1)) * ChartScaleY); 
+        CameraTarget.x = 0;
 }
 
 void ChartClassic::CameraSetEndChart() {
-    Camera->target.y = (Price->at(Price->size() - 1) * ChartScaleY); 
-    Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
+    CameraTarget.y = (Price->at(Price->size() - 1) * ChartScaleY); 
+    CameraTarget.x = static_cast<float>(Price->size() * ChartScaleX);
 }
 
 void ChartClassic::CameraSetYXChart() {
     CameraSetYChart();
-    Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
+    CameraTarget.x = static_cast<float>(Price->size() * ChartScaleX);
 }
