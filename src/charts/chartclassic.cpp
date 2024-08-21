@@ -53,14 +53,28 @@ void ChartClassic::UpdateCamera(float DeltaTime) {
     if(IsKeyDown(KEY_T)) ChartThick++;
     if(IsKeyDown(KEY_G)) ChartThick--;
 
-    if(IsKeyPressed(KEY_C) && Camera->target.x / ChartScaleX < Price->size()) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
-    if(IsKeyPressed(KEY_V)) {
+    if(IsKeyPressed(KEY_C)) CameraSetYChart(); 
+    if(IsKeyPressed(KEY_V)) CameraSetBeginChart();
+    if(IsKeyPressed(KEY_B)) CameraSetEndChart();
+    if(IsKeyPressed(KEY_L)) CameraLock = !CameraLock;
+}
+
+void ChartClassic::CameraSetYChart() {
+    if(Camera->target.x / ChartScaleX < Price->size()) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
+}
+
+void ChartClassic::CameraSetBeginChart() {
         if(Camera->target.x / ChartScaleX == 0) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX))) * ChartScaleY);
         else if(Camera->target.x / ChartScaleX < Price->size()) Camera->target.y = (Price->at(static_cast<int>(std::abs(Camera->target.x / ChartScaleX) - 1)) * ChartScaleY); 
         Camera->target.x = 0;
-    }
-    if(IsKeyPressed(KEY_B)) {
-        Camera->target.y = (Price->at(Price->size() - 1) * ChartScaleY); 
-        Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
-    }
+}
+
+void ChartClassic::CameraSetEndChart() {
+    Camera->target.y = (Price->at(Price->size() - 1) * ChartScaleY); 
+    Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
+}
+
+void ChartClassic::CameraSetYXChart() {
+    CameraSetYChart();
+    Camera->target.x = static_cast<float>(Price->size() * ChartScaleX);
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "charts/chartclassic.hpp"
+#include "livestock/livestock.hpp"
 #include "stock.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -39,6 +40,7 @@ class Exchange {
     stock::NormalizedPrice NPrice;
     Camera2D Camera;
     ChartClassic *Chart;
+    LiveStock *lstock;
     size_t seed;
 
     uint16_t ResX = 800;

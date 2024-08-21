@@ -39,4 +39,5 @@ namespace stock {
     void UpdateCamera(Camera2D *Camera, float Speed, float DeltaTime);
     std::vector<std::string> GetCompanyNames();
     stock::NormalizedPrice Normalize(const std::vector<double> *data);
+    void FastNormalize(stock::NormalizedPrice *NPrice, double Price);
 };

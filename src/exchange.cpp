@@ -1,5 +1,6 @@
 #include "exchange.hpp"
 #include "charts/chartclassic.hpp"
+#include "livestock/livestock.hpp"
 #include "stock.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -33,6 +34,8 @@ Exchange::Exchange(uint16_t x, uint16_t y, uint64_t sc, size_t _seed) {
     
     Camera.target.y = (NPrice.Price.at(NPrice.Price.size() - 1) * Chart->ChartScaleY); 
     Camera.target.x = static_cast<float>(NPrice.Price.size() * Chart->ChartScaleX);
+
+    lstock = new LiveStock(&StockData, &NPrice, &seed, 0.5);
     
     InitWindow(ResX, ResY, "Exchange");
     SetTargetFPS(60);
@@ -40,6 +43,7 @@ Exchange::Exchange(uint16_t x, uint16_t y, uint64_t sc, size_t _seed) {
 
 Exchange::~Exchange() {
     delete Chart;
+    delete lstock;
 }
 
 void Exchange::UpdateEvents() {
@@ -63,6 +67,8 @@ void Exchange::UpdateEvents() {
 }
 
 void Exchange::UpdateRender() {
+    if(Chart->CameraLock) Chart->CameraSetYXChart();
+
     BeginDrawing();
         ClearBackground(RenderConfig.ChartBackgroudColor);
 
@@ -84,7 +90,7 @@ void Exchange::UpdateRender() {
 }
 
 void Exchange::UpdateCharts() {
-
+    lstock->Simulate(GetFrameTime());
 }
 
 void Exchange::Update() {

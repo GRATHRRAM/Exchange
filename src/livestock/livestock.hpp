@@ -1,5 +1,6 @@
 #pragma once
 #include "../stock.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -20,13 +21,15 @@ namespace LiveStockStaff {
 class LiveStock {
     private:
         stock::StockData *Stock;
+        stock::NormalizedPrice *NPrice;
         uint32_t Sellers;
         uint32_t Buyers;
         LiveStockStaff::News News;
         float RealCoolDown;
     public:
         float CoolDown = 1;
+        size_t *Seed = 0x0;
 
-        LiveStock(stock::StockData *Stock, float CoolDownSeconds);
+        LiveStock(stock::StockData *Stock,stock::NormalizedPrice *NPrice, size_t *Seed, float CoolDownSeconds);
         void Simulate(float DeltaTime);  
 };

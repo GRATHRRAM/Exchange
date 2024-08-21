@@ -89,3 +89,10 @@ stock::NormalizedPrice stock::Normalize(const std::vector<double> *Vector) {
     };
     return np;
 }
+
+void stock::FastNormalize(stock::NormalizedPrice *np, double pr) {
+    if(pr > np->max) np->max = pr;
+    if(pr < np->min) np->min = pr;
+
+    np->Price.push_back((pr - np->min) / (np->max - np->min));
+}
